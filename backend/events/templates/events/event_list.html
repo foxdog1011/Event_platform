@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>事件管理平台</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            {% if user.is_authenticated %}
+                <li>Welcome，{{ user.username }}</li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}">Register</a></li>
+            {% endif %}
+        </ul>
+        <form method="GET">
+            <input type="text" name="q" placeholder="搜索事件" value="{{ request.GET.q }}">
+            <button type="submit">搜索</button>
+        </form>
+        
+    </nav>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

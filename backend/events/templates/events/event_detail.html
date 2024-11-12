@@ -1,0 +1,34 @@
+{% if user == event.author %}
+    <a href="{% url 'event_edit' event.pk %}">编辑</a>
+    <a href="{% url 'event_delete' event.pk %}">删除</a>
+{% endif %}
+{% if user.is_authenticated %}
+    <form action="{% url 'event_register' event.pk %}" method="POST">
+        {% csrf_token %}
+        <button type="submit">报名参加</button>
+    </form>
+{% else %}
+    <p><a href="{% url 'login' %}?next={{ request.path }}">登录</a> 以报名参加此事件。</p>
+{% endif %}
+<h3>评论</h3>
+<ul>
+    {% for comment in comments %}
+        <li>
+            <p>{{ comment.author.username }} 于 {{ comment.created_at }} 说：</p>
+            <p>{{ comment.content }}</p>
+        </li>
+    {% empty %}
+        <li>暂无评论。</li>
+    {% endfor %}
+</ul>
+
+{% if user.is_authenticated %}
+    <h4>添加评论</h4>
+    <form method="POST">
+        {% csrf_token %}
+        {{ comment_form.as_p }}
+        <button type="submit">提交评论</button>
+    </form>
+{% else %}
+    <p><a href="{% url 'login' %}?next={{ request.path }}">登录</a> 以添加评论。</p>
+{% endif %}

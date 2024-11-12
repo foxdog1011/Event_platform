@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h2>报名名单 - {{ event.title }}</h2>
+    <ul>
+        {% for registration in registrations %}
+            <li>{{ registration.attendee.username }} - {{ registration.registered_at }}</li>
+        {% empty %}
+            <li>暂无报名。</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
