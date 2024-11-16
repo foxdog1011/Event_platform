@@ -16,9 +16,8 @@ def register(request):
 
 def profile(request):
     if request.method == 'POST':
-        # 创建用于更新用户资料的表单
-        pass  # 您需要创建表单类，并处理表单提交
+        pass  
     else:
-        pass  # 显示用户资料
+        pass  
     return render(request, 'users/profile.html')
 

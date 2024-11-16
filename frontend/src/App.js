@@ -1,23 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
 
 function App() {
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true); 
+  const API_URL = process.env.REACT_APP_API_URL;
+
+  useEffect(() => {
+    fetch(`${API_URL}/api/events/`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        setEvents(data);
+        setLoading(false); 
+      })
+      .catch(error => {
+        console.error('Fetch error:', error);
+        setLoading(false); 
+      });
+  }, [API_URL]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>事件列表</h1>
+      {loading ? ( 
+        <p>加载中...</p>
+      ) : (
+        <ul>
+          {events.map(event => (
+            <li key={event.id}>
+              <h2>{event.title}</h2>
+              <p>{event.description}</p>
+              <p>日期：{event.date}</p>
+              <p>地点：{event.location}</p>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
